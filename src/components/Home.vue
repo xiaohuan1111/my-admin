@@ -1,15 +1,15 @@
 <template>
 	<div id="home">
-		<div  class="header">
-			<div class="logo" :class="collapsed ? 'logo-collapse-width' : 'logo-width'">
+		<div class="header">
+			<el-col :span="10" class="logo" :class="collapsed ? 'logo-collapse-width' : 'logo-width'">
 				{{ collapsed ? '' : sysName }}
-			</div>
-			<div class="tools">
+			</el-col>
+			<el-col :span="10" class="tools">
 				<span @click="toggleNav">
 					<i class="fa fa-align-justify"></i>
 				</span>
-			</div>
-			<div class="userInfo">
+			</el-col>
+			<el-col :span="4" class="userInfo">
 				<div>
 					<el-dropdown>
 						<div class="el-dropdown-link">
@@ -22,7 +22,7 @@
 						</el-dropdown-menu>
 					</el-dropdown>
 				</div>
-			</div>
+			</el-col>
 		</div>
 		<div class="main">
 			<aside class="mainNav" :class="collapsed ? 'menu-collapse' : 'menu-expanded'">
@@ -60,7 +60,7 @@
 					</li>
 				</ul>
 			</aside>
-			<section class="container">
+			<section class="content-container">
 				<div class="grid-content bg-purple-light">
 					<el-col :span="24" class="breadcrumb-container">
 						<strong class="title">{{ $route.name }}</strong>
@@ -134,17 +134,25 @@
 <style lang="scss">
 	@import '../assets/css/skin.scss';
 	#home{
-		height: 100vh;
+		position: absolute;
+		top: 0px;
+		bottom: 0px;
+		width: 100%;
 		.header{
 			width:100%;
-			display: flex;
 			color: #fff;
 			height: 60px;
 			line-height: 60px;
 			background-color : $color-primary;
-			.logo{ border-right : 1px solid #eee; }
+			.logo{ 
+				text-align: left;
+				height:60px;
+				border-right : 1px solid #eee; 
+				padding-left:20px;
+				padding-right:20px;
+				font-size:22px;
+			}
 			.tools{
-				flex: auto;
 				text-align: left;
 				i{
 					display: inline-block;
@@ -156,7 +164,8 @@
 
 			}
 			.userInfo{
-
+				float:right;
+				text-align: right;
 				.el-dropdown{
 					height:60px;
 					cursor: pointer;
@@ -174,15 +183,19 @@
 					width: 40px;
 					height: 40px;
 					border-radius: 20px;
-					margin:12px 0 12px 12px;
+					margin:12px 12px 12px 12px;
 				}
 			}
+			.logo-collapse-width{ width : 60px;} 
+			.logo-width{ width : 230px; }
 		}
-		.logo-collapse-width{ width : 60px;} 
-		.logo-width{ width : 230px; }
+		
 		.main{
 			display: flex;
-			box-sizing: border-box;
+			position: absolute;
+			top: 60px;
+			bottom: 0px;
+			overflow: hidden;
 			.mainNav{
 				background-color:#eee;
 				text-align: left;
@@ -200,8 +213,9 @@
 					width:60px;
 				}
 			}
-			.container{
+			.content-container{
 				padding: 20px;
+				overflow-y: auto;
 				.breadcrumb-container{
 					.title{
 						float: left;
