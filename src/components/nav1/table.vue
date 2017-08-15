@@ -15,7 +15,7 @@
 			</el-form>
 		</el-col>
 		<!-- table -->
-		<el-table :data="users"  highlight-current-row fit  v-loading="listLoading" style="width:100%;">
+		<el-table :data="users"  highlight-current-row fit  v-loading="listLoading" @selection-change='selsChange' style="width:100%;">
 			<el-table-column type="selection" width="55"></el-table-column>
 			<el-table-column type="index" width="55"></el-table-column>
 			<el-table-column prop="name" label="姓名" width="120" ></el-table-column>
@@ -32,7 +32,7 @@
 		</el-table> 
 		<!-- 工具条分页 -->
 		<el-col :span="24" class="toolbar">
-			<el-button type="danger">批量删除</el-button>
+			<el-button type="danger" @click="batchRemove" :disabled="this.sels.length === 0">批量删除</el-button>
 			<el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="20" :total="total" style="float:right;"></el-pagination>
 		</el-col>
 
@@ -91,11 +91,12 @@
 				<el-button type="primary" @click="editSubmit('editForm')" :loading="editLoading">确定</el-button>
 			</div>
 		</el-dialog>
+
 	</div>
 </template>
 <script>
 	import util from '../../common/js/util'
-	import { getUserListPage , addUser, editUser} from '@/api/api'
+	import { getUserListPage , addUser, editUser, removeUser, batchRemove} from '@/api/api'
 	export default{
 		data(){
 			return {
@@ -135,6 +136,7 @@
 					{ required: true, message: '请输入姓名', trigger: 'blur' }
 					]
 				},
+				sels:[] // 选中列表
 			}
 		},
 		methods: {
@@ -146,7 +148,36 @@
 				this.editForm = Object.assign({},row);
 			},
 			handleDelete(index, row){
-				// this.editFormVisible = false;
+				this.$confirm('您确认删除该记录吗？','提示',{
+					type:'warning'
+				}).then(() => {
+					this.listLoading = true;
+					let para = {id: row.id}
+					removeUser(para).then((res) => {
+						this.$message({
+							type:'success',
+							message: res.data.msg
+						});
+						this.getUsers();
+					})
+				})
+			},
+			batchRemove: function(){
+				var ids = this.sels.map(item => item.id).toString();
+				this.$confirm('您确认删除吗?',"提示",{
+					type: 'waring'
+				}).then(() => {
+					this.listLoading = true;
+					let para = {ids: ids};
+					batchRemove(para).then((res) => {
+						this.$message({
+							type: 'success',
+							message: res.data.msg
+						});
+						this.listLoading = false;
+						this.getUsers();
+					})
+				})
 			},
 			handleCurrentChange(val) {
 				this.page = val ;
@@ -188,6 +219,8 @@
 					}
 				})
 			},
+
+			// 编辑用户
 			editSubmit: function(formname){
 				this.$refs[formname].validate((valid) => {
 					if(valid){
@@ -205,6 +238,11 @@
 						})
 					}
 				})
+			},
+
+			//批量删除
+			selsChange: function(sels){
+				this.sels = sels;
 			}
 
 		},

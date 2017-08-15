@@ -7,3 +7,5 @@ export const getUserList = params => {return axios.get("/user/list",{params: par
 export const getUserListPage = params => {return axios.get("/user/listpage",{params: params});}
 export const addUser = params => {return axios.get('/user/add',{params: params});}
 export const editUser = params => {return axios.get('/user/edit',{params: params});}
+export const removeUser = params => {return axios.get('/user/remove',{params: params});}
+export const batchRemove = params => {return axios.get('/user/batchRemove', {params: params})}
