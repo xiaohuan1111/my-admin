@@ -10,6 +10,7 @@
 </script>
 <style lang="scss">
 	#page5{
-		
+		width:100%;
+		backgorund-color: blue;
 	}
 </style>

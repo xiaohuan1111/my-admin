@@ -134,9 +134,6 @@
 <style lang="scss">
 	@import '../assets/css/skin.scss';
 	#home{
-		position: absolute;
-		top: 0px;
-		bottom: 0px;
 		width: 100%;
 		.header{
 			width:100%;
@@ -189,12 +186,11 @@
 			.logo-collapse-width{ width : 60px;} 
 			.logo-width{ width : 230px; }
 		}
-		
 		.main{
 			display: flex;
-			position: absolute;
 			top: 60px;
 			bottom: 0px;
+			width: 100%;
 			overflow: hidden;
 			.mainNav{
 				background-color:#eee;
@@ -214,6 +210,7 @@
 				}
 			}
 			.content-container{
+				flex: auto;
 				padding: 20px;
 				overflow-y: auto;
 				.breadcrumb-container{
